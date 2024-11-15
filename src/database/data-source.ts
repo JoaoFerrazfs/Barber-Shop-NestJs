@@ -1,12 +1,15 @@
-import { DataSource, DataSourceOptions } from 'typeorm';
+import { DataSource } from 'typeorm';
 
 import * as dotenv from 'dotenv';
+import * as path from 'path';
+
+const ENV = process.env.NODE_ENV;
 
 dotenv.config({
-  path: process.env.NODE_ENV === 'testing' ? '.testing.env' : '.env',
+  path: ENV ? `.${ENV}.env` : '.env',
 });
 
-export const dataSourceOptions: DataSourceOptions = {
+export const AppDataSource = new DataSource({
   type: 'mysql',
   host: process.env.DATA_BASE_HOST,
   port: Number(process.env.DATA_BASE_PORT),
@@ -16,12 +19,9 @@ export const dataSourceOptions: DataSourceOptions = {
   synchronize: true,
   bigNumberStrings: true,
   multipleStatements: true,
-  logging: false,
   entities: [__dirname + '/../**/*.entity{.js,.ts}'],
-  migrations: ['./migrations/*{.ts,.js}'],
+  migrations: [path.join(__dirname, './migrations/*{.ts,.js}')],
   migrationsRun: true,
-};
-
-const dataSource = new DataSource(dataSourceOptions);
-
-export default dataSource;
+  logging: ['error'],
+  logger: 'debug',
+});

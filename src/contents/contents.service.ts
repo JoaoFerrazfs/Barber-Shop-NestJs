@@ -15,7 +15,11 @@ export class ContentsService {
     return await this.contentsRepository.find();
   }
 
-  store({ imageUrl, title }: ContentCreateDTO) {
+  async getModuleById(id: number): Promise<Contents> {
+    return await this.contentsRepository.findOneBy({ id });
+  }
+
+  async store({ imageUrl, title }: ContentCreateDTO) {
     const content = this.contentsRepository.create({ imageUrl, title });
     return this.contentsRepository.save(content);
   }
