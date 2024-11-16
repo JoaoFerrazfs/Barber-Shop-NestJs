@@ -21,6 +21,15 @@ export class ContentsService {
 
   async store({ imageUrl, title }: ContentCreateDTO) {
     const content = this.contentsRepository.create({ imageUrl, title });
-    return this.contentsRepository.save(content);
+
+    return await this.contentsRepository.save(content);
+  }
+
+  async update(id: number, data: ContentCreateDTO): Promise<boolean> {
+    return Boolean((await this.contentsRepository.update(id, data)).affected);
+  }
+
+  async delete(id: number): Promise<boolean> {
+    return Boolean((await this.contentsRepository.delete(id)).affected);
   }
 }

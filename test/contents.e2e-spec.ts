@@ -70,4 +70,30 @@ describe('Contents (e2e)', () => {
         },
       });
   });
+
+  it('Update a content', async () => {
+    const payload = {
+      title: 'Segundo slide',
+      imageUrl:
+        'https://cdn.leroymerlin.com.br/uploads/img/banners/_7_home_tv_%7C_opecom_bricolagem_%7C_ordenada_25_10_a_17_11_27f8_1180x320.png?width=1200',
+    };
+
+    await request(app.getHttpServer())
+      .patch('/api/contents/module/1')
+      .send(payload)
+      .expect(200)
+      .expect({
+        id: 1,
+        title: 'Segundo slide',
+        imageUrl:
+          'https://cdn.leroymerlin.com.br/uploads/img/banners/_7_home_tv_%7C_opecom_bricolagem_%7C_ordenada_25_10_a_17_11_27f8_1180x320.png?width=1200',
+      });
+  });
+
+  it('Delete a content', async () => {
+    await request(app.getHttpServer())
+      .delete('/api/contents/module/1')
+      .expect(204)
+      .expect('');
+  });
 });
