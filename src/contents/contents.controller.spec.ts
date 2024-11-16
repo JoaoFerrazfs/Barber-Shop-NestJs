@@ -13,7 +13,7 @@ describe('ContentsController', () => {
       providers: [ContentsServiceMock],
     }).compile();
 
-    contentsController = module.get(ContentsController);
+    contentsController = module.get<ContentsController>(ContentsController);
   });
 
   it('Should return contents', async () => {
