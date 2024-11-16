@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -13,6 +12,8 @@ import {
 } from '@nestjs/common';
 import { ContentsService } from './contents.service';
 import { ContentCreateDTO } from './dto/content.create.dto';
+import { ApiResponse } from '@nestjs/swagger';
+import { createResponse } from './swagguer/contents.schemas';
 
 @Controller('api/contents')
 export class ContentsController {
@@ -23,6 +24,7 @@ export class ContentsController {
     return { data: await this.contentsService.modules() };
   }
 
+  @ApiResponse(createResponse)
   @Post('module')
   async module(@Body() data: ContentCreateDTO) {
     return { data: await this.contentsService.store(data) };

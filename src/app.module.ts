@@ -1,7 +1,5 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ContentsModule } from './contents/contents.module';
 import { ConfigModule } from '@nestjs/config';
 
@@ -21,7 +19,5 @@ const ENV = process.env.NODE_ENV;
       }),
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
