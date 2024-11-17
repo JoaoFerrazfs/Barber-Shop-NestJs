@@ -1,14 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, IsUrl } from 'class-validator';
-import { imageUrl, title } from '../swagguer/contents.schemas';
+import { ImageUrl, Title } from '../swagguer/contents.examples';
 
 export class ContentCreateDTO {
-  @ApiProperty(title)
+  @ApiProperty(Title)
   @IsNotEmpty()
   @IsString()
   title: string;
 
-  @ApiProperty(imageUrl)
+  @ApiProperty(ImageUrl)
   @IsNotEmpty()
   @IsUrl()
   imageUrl: string;

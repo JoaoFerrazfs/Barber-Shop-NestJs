@@ -13,28 +13,38 @@ import {
 import { ContentsService } from './contents.service';
 import { ContentCreateDTO } from './dto/content.create.dto';
 import { ApiResponse } from '@nestjs/swagger';
-import { createResponse } from './swagguer/contents.schemas';
+import {
+  GetModules,
+  ApiDeleteSwagguer,
+  ApiUpdateSwagguer,
+  CreateModule,
+  GetModule,
+} from './swagguer/contents.examples';
+import { Contents } from './contents.entity';
 
 @Controller('api/contents')
 export class ContentsController {
   constructor(private readonly contentsService: ContentsService) {}
 
+  @ApiResponse(GetModules)
   @Get('modules')
-  async modules() {
+  async modules(): Promise<{ data: Contents[] } | { data: {} }> {
     return { data: await this.contentsService.modules() };
   }
 
-  @ApiResponse(createResponse)
+  @ApiResponse(CreateModule)
   @Post('module')
-  async module(@Body() data: ContentCreateDTO) {
+  async module(@Body() data: ContentCreateDTO): Promise<{ data: Contents }> {
     return { data: await this.contentsService.store(data) };
   }
 
+  @ApiResponse(GetModule)
   @Get('module/:id')
-  async getModule(@Param('id') id: number) {
+  async getModule(@Param('id') id: number): Promise<{ data: Contents }> {
     return { data: await this.contentsService.getModuleById(id) };
   }
 
+  @ApiDeleteSwagguer()
   @HttpCode(204)
   @Delete('module/:id')
   async delete(@Param('id') id: number) {
@@ -46,6 +56,7 @@ export class ContentsController {
     throw new HttpException('Some error ocurred', HttpStatus.BAD_REQUEST);
   }
 
+  @ApiUpdateSwagguer()
   @Patch('module/:id')
   async update(@Param('id') id: number, @Body() data: ContentCreateDTO) {
     if (!(await this.contentsService.getModuleById(id)))
