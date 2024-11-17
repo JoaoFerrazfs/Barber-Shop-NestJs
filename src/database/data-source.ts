@@ -4,7 +4,7 @@ import * as dotenv from 'dotenv';
 import * as path from 'path';
 
 const ENV = process.env.NODE_ENV;
-
+console.log(ENV ? `.${ENV}.env` : '.env');
 dotenv.config({
   path: ENV ? `.${ENV}.env` : '.env',
 });

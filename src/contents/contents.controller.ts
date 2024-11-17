@@ -9,6 +9,7 @@ import {
   Param,
   Patch,
   Post,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ContentsService } from './contents.service';
 import { ContentCreateDTO } from './dto/content.create.dto';
@@ -21,6 +22,7 @@ import {
   GetModule,
 } from './swagguer/contents.examples';
 import { Contents } from './contents.entity';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('api/contents')
 export class ContentsController {
@@ -29,9 +31,12 @@ export class ContentsController {
   @ApiResponse(GetModules)
   @Get('modules')
   async modules(): Promise<{ data: Contents[] } | { data: {} }> {
+    await new Promise((resolve) => setTimeout(resolve, 200));
+
     return { data: await this.contentsService.modules() };
   }
 
+  @UseInterceptors(CacheInterceptor)
   @ApiResponse(CreateModule)
   @Post('module')
   async module(@Body() data: ContentCreateDTO): Promise<{ data: Contents }> {

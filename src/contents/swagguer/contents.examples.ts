@@ -1,4 +1,4 @@
-import { applyDecorators } from '@nestjs/common';
+import { applyDecorators, UseInterceptors } from '@nestjs/common';
 import { MultipleModules, SingleModule } from './content.schemas';
 import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 
@@ -63,7 +63,6 @@ export function ApiUpdateSwagguer() {
     ApiParam({
       name: 'id',
       type: Number,
-      description: 'ID of the module to update',
       example: 1,
     }),
     ApiResponse({
