@@ -3,21 +3,27 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../src/app.module';
 import { ContentsModule } from '../src/contents/contents.module';
 import * as request from 'supertest';
+import { Contents } from '../src/contents/contents.entity';
+import { DataSource } from 'typeorm';
 
 describe('Contents (e2e)', () => {
   let app: INestApplication;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule, ContentsModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();
+
+    const dataSource = app.get(DataSource);
+    await dataSource.createQueryBuilder().delete().from(Contents).execute();
+    await dataSource.query('ALTER TABLE contents AUTO_INCREMENT = 1');
   });
 
   afterAll(async () => {
-    await app.close(); // Fechar a instância do NestJS
+    await app.close();
   });
 
   it('Create a content', async () => {
