@@ -6,16 +6,15 @@ import { ConfigModule } from '@nestjs/config';
 import { AppDataSource } from './database/data-source';
 import { CacheModule, CacheStore } from '@nestjs/cache-manager';
 import { redisStore } from 'cache-manager-redis-store';
+import { ScheduleModule } from './schedule/schedule.module';
 
 const ENV = process.env.NODE_ENV;
 
-console.log(ENV ? `.${ENV}.env` : '.env');
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: ENV ? `.${ENV}.env` : '.env',
     }),
-    ContentsModule,
     TypeOrmModule.forRootAsync({
       useFactory: async () => ({
         ...AppDataSource.options,
@@ -37,6 +36,8 @@ console.log(ENV ? `.${ENV}.env` : '.env');
         };
       },
     }),
+    ContentsModule,
+    ScheduleModule,
   ],
 })
 export class AppModule {}

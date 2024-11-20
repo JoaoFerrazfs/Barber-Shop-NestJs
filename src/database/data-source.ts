@@ -4,7 +4,6 @@ import * as dotenv from 'dotenv';
 import * as path from 'path';
 
 const ENV = process.env.NODE_ENV;
-console.log(ENV ? `.${ENV}.env` : '.env');
 dotenv.config({
   path: ENV ? `.${ENV}.env` : '.env',
 });
@@ -22,6 +21,6 @@ export const AppDataSource = new DataSource({
   entities: [__dirname + '/../**/*.entity{.js,.ts}'],
   migrations: [path.join(__dirname, './migrations/*{.ts,.js}')],
   migrationsRun: true,
-  logging: ['error'],
-  logger: 'debug',
+  logging: ['info'],
+  logger: 'advanced-console',
 });
