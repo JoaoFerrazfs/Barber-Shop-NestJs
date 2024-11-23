@@ -7,11 +7,8 @@ import {
   Post,
 } from '@nestjs/common';
 import { CreateSchedule } from '../dto/schedule.dto';
-import { DaysOfTheWeek } from '../enums/daysOfTheWeek.enum';
 import { ScheduleService } from '../services/schedule.service';
 import { AvailabilityService } from '../services/availability.service';
-
-import * as dayjs from 'dayjs';
 
 @Controller('api/schedule')
 export class ScheduleController {
@@ -26,11 +23,18 @@ export class ScheduleController {
 
   @Post('create')
   async schedule(@Body() data: CreateSchedule) {
-    const dayOfWeekName = dayjs(data.startTime).format('dddd').toUpperCase();
+    if (
+      !this.availabilityService.isAvailableForWork(data.startTime, data.endTime)
+    ) {
+      throw new HttpException(
+        'fora do horario de trabalho',
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
 
     if (this.availabilityService.isWeekend(data.startTime)) {
       throw new HttpException(
-        'Some error ocurred',
+        'fim de semana to de folga',
         HttpStatus.UNPROCESSABLE_ENTITY,
       );
     }
@@ -42,7 +46,7 @@ export class ScheduleController {
       ))
     ) {
       throw new HttpException(
-        'Some error ocurred',
+        'Horario não disponivel',
         HttpStatus.SERVICE_UNAVAILABLE,
       );
     }

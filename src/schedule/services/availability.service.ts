@@ -10,6 +10,8 @@ import { Schedule } from '../schedule.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as dayjs from 'dayjs';
 import { DaysOfTheWeek } from '../enums/daysOfTheWeek.enum';
+import { dayjsUtc } from '../../utils/date/util.dayjs';
+import { WorkShift } from '../enums/workshift.enum';
 
 @Injectable()
 export class AvailabilityService {
@@ -52,5 +54,15 @@ export class AvailabilityService {
       Number(DaysOfTheWeek[dayOfWeekName]) === Number(DaysOfTheWeek.SUNDAY) ||
       Number(DaysOfTheWeek[dayOfWeekName]) === Number(DaysOfTheWeek.SATURDAY)
     );
+  }
+
+  isAvailableForWork(startTime: string, endTime: string): boolean {
+    const start = dayjsUtc()(startTime).utc().hour();
+    const end = dayjsUtc()(endTime).utc().hour();
+
+    if (start < WorkShift.OPENING) return false;
+    if (end > WorkShift.CLOSING) return false;
+
+    return true;
   }
 }
