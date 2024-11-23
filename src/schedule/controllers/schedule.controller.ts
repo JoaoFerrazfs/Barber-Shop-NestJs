@@ -18,7 +18,7 @@ export class ScheduleController {
   ) {}
   @Get()
   async available() {
-    return await this.scheduleService.getAvailableDays();
+    return { data: await this.scheduleService.getAvailableDays() };
   }
 
   @Post('create')
