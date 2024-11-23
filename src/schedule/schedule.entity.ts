@@ -5,15 +5,14 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { DaysOfTheWeek } from './enums/daysOfTheWeek.enum';
 
 @Entity('schedule')
 export class Schedule {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'int' })
-  dayOfWeek: number;
+  @Column()
+  type: string;
 
   @CreateDateColumn()
   startTime: Date;

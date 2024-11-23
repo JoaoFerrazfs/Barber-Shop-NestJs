@@ -1,5 +1,4 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
-import { DaysOfTheWeek } from '../../schedule/enums/daysOfTheWeek.enum';
 
 export class Schedule1732123680572 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -15,8 +14,8 @@ export class Schedule1732123680572 implements MigrationInterface {
             generationStrategy: 'increment',
           },
           {
-            name: 'dayOfWeek',
-            type: 'int',
+            name: 'type',
+            type: 'varchar',
           },
           {
             name: 'startTime',
