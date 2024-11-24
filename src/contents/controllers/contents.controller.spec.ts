@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { ContentsController } from './contents.controller';
-import { ContentsServiceMock } from '../../test/mocks/Contents/contents.service.mock';
-import { ContentCreateDTO } from './dto/content.create.dto';
+import { ContentsServiceMock } from '../../../test/mocks/Contents/contents.service.mock';
+import { ContentCreateDTO } from '../dto/content.create.dto';
 import { HttpException, HttpStatus } from '@nestjs/common';
 
 describe('ContentsController', () => {

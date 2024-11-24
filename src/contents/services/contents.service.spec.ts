@@ -1,12 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ContentsService } from './contents.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Contents } from './contents.entity';
+import { Contents } from '../contents.entity';
 import {
   constent,
   contentCreateDTO,
   contentsRepositoryMock,
-} from '../../test/mocks/Contents/content.respository.mock';
+} from '../../../test/mocks/Contents/content.respository.mock';
 
 describe('ContentsService', () => {
   let service: ContentsService;

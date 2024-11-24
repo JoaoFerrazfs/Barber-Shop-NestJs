@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { ContentsController } from './contents.controller';
-import { ContentsService } from './contents.service';
+import { ContentsController } from './controllers/contents.controller';
+import { ContentsService } from './services/contents.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Contents } from './contents.entity';
 

@@ -11,8 +11,8 @@ import {
   Post,
   UseInterceptors,
 } from '@nestjs/common';
-import { ContentsService } from './contents.service';
-import { ContentCreateDTO } from './dto/content.create.dto';
+import { ContentsService } from '../services/contents.service';
+import { ContentCreateDTO } from '../dto/content.create.dto';
 import { ApiResponse } from '@nestjs/swagger';
 import {
   GetModules,
@@ -20,8 +20,8 @@ import {
   ApiUpdateSwagguer,
   CreateModule,
   GetModule,
-} from './swagguer/contents.examples';
-import { Contents } from './contents.entity';
+} from '../swagguer/contents.examples';
+import { Contents } from '../contents.entity';
 import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('api/contents')

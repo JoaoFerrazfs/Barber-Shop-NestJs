@@ -1,4 +1,4 @@
-import { ContentsService } from '../../../src/contents/contents.service';
+import { ContentsService } from '../../../src/contents/services/contents.service';
 
 export const ContentsServiceMock = {
   provide: ContentsService,
