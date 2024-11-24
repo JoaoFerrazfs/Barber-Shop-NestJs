@@ -20,7 +20,7 @@ describe('ScheduleController', () => {
 
   test('Should return available schedule', async () => {
     // Actions
-    const actual = await scheduleController.available();
+    const actual = await scheduleController.schedules();
 
     // Assertions
     expect(actual).toStrictEqual({ data: ['availableDays'] });

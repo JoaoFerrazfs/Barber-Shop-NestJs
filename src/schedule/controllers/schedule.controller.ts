@@ -17,7 +17,7 @@ export class ScheduleController {
     private readonly availabilityService: AvailabilityService,
   ) {}
   @Get()
-  async available() {
+  async schedules() {
     return { data: await this.scheduleService.getAvailableDays() };
   }
 
