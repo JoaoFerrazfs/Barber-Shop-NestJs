@@ -9,6 +9,8 @@ import {
 import { CreateSchedule } from '../dto/schedule.dto';
 import { ScheduleService } from '../services/schedule.service';
 import { AvailabilityService } from '../services/availability.service';
+import { dayjsUtc } from '../../utils/date/util.dayjs';
+import { WorkShift } from '../enums/workshift.enum';
 
 @Controller('api/schedule')
 export class ScheduleController {
@@ -18,7 +20,7 @@ export class ScheduleController {
   ) {}
   @Get()
   async schedules() {
-    return { data: await this.scheduleService.getAvailableDays() };
+    return { data: await this.scheduleService.getSchedules() };
   }
 
   @Post('create')
@@ -54,5 +56,10 @@ export class ScheduleController {
     const result = await this.scheduleService.createSchedule(data);
 
     return { data: result };
+  }
+
+  @Get('available')
+  async available() {
+    return { data: await this.scheduleService.getAppointmentsByPeriod() };
   }
 }

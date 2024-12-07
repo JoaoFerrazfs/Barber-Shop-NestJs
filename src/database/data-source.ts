@@ -22,4 +22,5 @@ export const AppDataSource = new DataSource({
   migrations: [path.join(__dirname, './migrations/*{.ts,.js}')],
   migrationsRun: true,
   logging: false,
+  timezone: 'Z',
 });

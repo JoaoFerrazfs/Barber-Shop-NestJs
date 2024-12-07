@@ -10,7 +10,6 @@ import { Schedule } from '../schedule.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as dayjs from 'dayjs';
 import { DaysOfTheWeek } from '../enums/daysOfTheWeek.enum';
-import { dayjsUtc } from '../../utils/date/util.dayjs';
 import { WorkShift } from '../enums/workshift.enum';
 
 @Injectable()
@@ -30,12 +29,12 @@ export class AvailabilityService {
     const overlappingSchedules = await this.scheduleRepository.findOne({
       where: [
         {
-          startTime: LessThanOrEqual(dataEndTime),
+          startTime: LessThan(dataEndTime),
           endTime: MoreThan(dataStartTime),
         },
         {
-          startTime: LessThan(dataEndTime),
-          endTime: MoreThanOrEqual(dataStartTime),
+          startTime: LessThanOrEqual(dataEndTime),
+          endTime: MoreThan(dataStartTime),
         },
         {
           startTime: MoreThanOrEqual(dataStartTime),
@@ -57,12 +56,63 @@ export class AvailabilityService {
   }
 
   isAvailableForWork(startTime: string, endTime: string): boolean {
-    const start = dayjsUtc()(startTime).utc().hour();
-    const end = dayjsUtc()(endTime).utc().hour();
+    const start = new Date(startTime).getUTCHours();
+    const end = new Date(endTime).getUTCHours();
+
+    if (start <= WorkShift.LUNCH_TIME_START || end <= WorkShift.LUCH_TIME_END)
+      return false;
 
     if (start < WorkShift.OPENING) return false;
-    if (end > WorkShift.CLOSING) return false;
 
-    return true;
+    return end <= WorkShift.CLOSING;
+  }
+
+  generateTimeSlots(
+    date: Date,
+    startHour: number,
+    endHour: number,
+    slotDuration: number,
+  ): Date[] {
+    const slots: Date[] = [];
+
+    const start = dayjs
+      .utc(date)
+      .set('hour', startHour)
+      .set('minute', 0)
+      .set('second', 0)
+      .set('millisecond', 0)
+      .toDate();
+
+    const end = dayjs
+      .utc(date)
+      .set('hour', endHour)
+      .set('minute', 0)
+      .set('second', 0)
+      .set('millisecond', 0)
+      .toDate();
+
+    while (start < end) {
+      slots.push(new Date(start));
+      start.setMinutes(start.getMinutes() + slotDuration);
+    }
+
+    return slots;
+  }
+
+  filterAvailableSlots(
+    slots: Date[],
+    appointments: { date: Date; duration: number }[],
+  ): Date[] {
+    return slots.filter((slot) => {
+      return !appointments.some((appointment) => {
+        const appointmentStart = new Date(appointment.date);
+        const appointmentEnd = new Date(appointmentStart);
+        appointmentEnd.setMinutes(
+          appointmentStart.getMinutes() + appointment.duration,
+        );
+
+        return slot >= appointmentStart && slot < appointmentEnd;
+      });
+    });
   }
 }

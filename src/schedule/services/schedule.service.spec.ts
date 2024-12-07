@@ -27,7 +27,7 @@ describe('Schedule service test', () => {
 
   it('should get schedules', async () => {
     // Action
-    const actual = await scheduleService.getAvailableDays();
+    const actual = await scheduleService.getSchedules();
 
     // Expectations
     expect(actual).toEqual([schedule]);
