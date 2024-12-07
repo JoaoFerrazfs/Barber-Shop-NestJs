@@ -3,6 +3,7 @@ import { ContentsController } from './contents.controller';
 import { ContentsServiceMock } from '../../../test/mocks/Contents/contents.service.mock';
 import { ContentCreateDTO } from '../dto/content.create.dto';
 import { HttpException, HttpStatus } from '@nestjs/common';
+import { CacheModule } from '@nestjs/cache-manager';
 
 describe('ContentsController', () => {
   let contentsController: ContentsController;
@@ -10,6 +11,7 @@ describe('ContentsController', () => {
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       controllers: [ContentsController],
+      imports: [CacheModule.register()],
       providers: [ContentsServiceMock],
     }).compile();
 

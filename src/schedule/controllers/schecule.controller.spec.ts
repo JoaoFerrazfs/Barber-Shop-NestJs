@@ -1,10 +1,10 @@
 import { Test } from '@nestjs/testing';
-import { ScheduleController } from './schedule.controller';
 import { AvailabilityServiceMock } from '../../../test/mocks/Schedule/availability.service.mock';
 import { ScheduleServiceMock } from '../../../test/mocks/Schedule/schedule.service.mock';
 import { CreateSchedule } from '../dto/schedule.dto';
 import { SpendTimeService } from '../enums/spendTimeService.enum';
 import { HttpException, HttpStatus } from '@nestjs/common';
+import { ScheduleController } from './schedule.controller';
 
 describe('ScheduleController', () => {
   let scheduleController: ScheduleController;

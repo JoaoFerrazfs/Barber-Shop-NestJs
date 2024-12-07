@@ -19,12 +19,12 @@ export class ScheduleController {
     private readonly availabilityService: AvailabilityService,
   ) {}
   @Get()
-  async schedules() {
+  public async schedules() {
     return { data: await this.scheduleService.getSchedules() };
   }
 
   @Post('create')
-  async schedule(@Body() data: CreateSchedule) {
+  public async schedule(@Body() data: CreateSchedule) {
     if (
       !this.availabilityService.isAvailableForWork(data.startTime, data.endTime)
     ) {
@@ -59,7 +59,7 @@ export class ScheduleController {
   }
 
   @Get('available')
-  async available() {
+  public async available() {
     return { data: await this.scheduleService.getAppointmentsByPeriod() };
   }
 }
