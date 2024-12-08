@@ -7,6 +7,8 @@ import { AppDataSource } from './database/data-source';
 import { CacheModule, CacheStore } from '@nestjs/cache-manager';
 import { redisStore } from 'cache-manager-redis-store';
 import { ScheduleModule } from './schedule/schedule.module';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 
 const ENV = process.env.NODE_ENV;
 
@@ -38,6 +40,8 @@ const ENV = process.env.NODE_ENV;
     }),
     ContentsModule,
     ScheduleModule,
+    AuthModule,
+    UsersModule,
   ],
 })
 export class AppModule {}
