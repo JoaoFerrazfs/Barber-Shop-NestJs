@@ -18,15 +18,15 @@ describe('ScheduleController', () => {
     scheduleController = module.get<ScheduleController>(ScheduleController);
   });
 
-  test('Should return available schedule', async () => {
+  it('Should return available schedule', async () => {
     // Actions
     const actual = await scheduleController.schedules();
 
     // Assertions
-    expect(actual).toStrictEqual({ data: ['availableDays'] });
+    expect(actual).toStrictEqual({ data: ['appointedSchedules'] });
   });
 
-  test('Should schedule a service', async () => {
+  it('Should schedule a service', async () => {
     // Set
     const data: CreateSchedule = {
       type: SpendTimeService.SIMPLE_SERVICE,
@@ -42,7 +42,7 @@ describe('ScheduleController', () => {
     expect(actual).toStrictEqual({ data: ['schedules'] });
   });
 
-  test('Should not schedule a service in weekends', async () => {
+  it('Should not schedule a service in weekends', async () => {
     // Set
     const data: CreateSchedule = {
       type: SpendTimeService.SIMPLE_SERVICE,
@@ -65,7 +65,7 @@ describe('ScheduleController', () => {
     );
   });
 
-  test('Should not schedule a service out of avaiable work shift', async () => {
+  it('Should not schedule a service out of avaiable work shift', async () => {
     // Set
     const data: CreateSchedule = {
       type: SpendTimeService.SIMPLE_SERVICE,
@@ -88,7 +88,7 @@ describe('ScheduleController', () => {
     );
   });
 
-  test('Should not schedule a service with not slots able', async () => {
+  it('Should not schedule a service with not slots able', async () => {
     // Set
     const data: CreateSchedule = {
       type: SpendTimeService.SIMPLE_SERVICE,
@@ -113,5 +113,16 @@ describe('ScheduleController', () => {
         HttpStatus.SERVICE_UNAVAILABLE,
       ),
     );
+  });
+
+  it('Should return all available schedules', async () => {
+    // Set
+    const expected = ['availableDays'];
+
+    // Actions
+    const actual = await scheduleController.available();
+
+    // Assertions
+    expect(actual).toStrictEqual({ data: expected });
   });
 });

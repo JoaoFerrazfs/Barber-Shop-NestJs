@@ -4,6 +4,7 @@ export const ScheduleServiceMock = {
   provide: ScheduleService,
   useValue: {
     createSchedule: jest.fn().mockReturnValue(['schedules']),
-    getSchedules: jest.fn().mockReturnValue(['availableDays']),
+    getSchedules: jest.fn().mockReturnValue(['appointedSchedules']),
+    getAppointmentsByPeriod: jest.fn().mockReturnValue(['availableDays']),
   },
 };

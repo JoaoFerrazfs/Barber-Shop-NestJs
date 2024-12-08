@@ -6,6 +6,7 @@ import { DataSource } from 'typeorm';
 import * as request from 'supertest';
 import { Schedule } from '../src/schedule/schedule.entity';
 import { scheduleDto } from './mocks/Schedule/schedule.respository.mock';
+import MockDate from 'mockdate';
 
 describe('Schedule (e2e)', () => {
   let app: INestApplication;
@@ -21,6 +22,9 @@ describe('Schedule (e2e)', () => {
     const dataSource = app.get(DataSource);
     await dataSource.createQueryBuilder().delete().from(Schedule).execute();
     await dataSource.query('ALTER TABLE schedule AUTO_INCREMENT = 1');
+
+    // Set Date
+    MockDate.set('2024-11-21T10:30:00.000Z');
   });
 
   afterAll(async () => {
@@ -68,6 +72,46 @@ describe('Schedule (e2e)', () => {
           updatedAt: expect.any(String),
         },
       ]),
+    });
+  });
+
+  it('should get all  free schedule', async () => {
+    // Actions
+    const response = request(app.getHttpServer()).get(
+      '/api/schedule/available',
+    );
+
+    // Assertions
+    response.expect(200);
+
+    expect((await response).body).toEqual({
+      data: [
+        {
+          day: '2024-11-21',
+          start: '2024-11-21T08:00:00.000Z',
+          end: '2024-11-21T12:00:00.000Z',
+        },
+        {
+          day: '2024-11-21',
+          start: '2024-11-21T13:00:00.000Z',
+          end: '2024-11-21T15:33:00.000Z',
+        },
+        {
+          day: '2024-11-21',
+          start: '2024-11-21T16:03:00.000Z',
+          end: '2024-11-21T18:00:00.000Z',
+        },
+        {
+          day: '2024-11-22',
+          start: '2024-11-22T08:00:00.000Z',
+          end: '2024-11-22T12:00:00.000Z',
+        },
+        {
+          day: '2024-11-22',
+          start: '2024-11-22T13:00:00.000Z',
+          end: '2024-11-22T18:00:00.000Z',
+        },
+      ],
     });
   });
 });

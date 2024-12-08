@@ -10,8 +10,7 @@ export class ScheduleService {
   constructor(
     @InjectRepository(Schedule)
     private readonly scheduleRepository: Repository<Schedule>,
-  ) {
-  }
+  ) {}
 
   public async getSchedules() {
     return await this.scheduleRepository.find();
@@ -28,7 +27,7 @@ export class ScheduleService {
     });
   }
 
-  public async getAppointmentsByPeriod(daysToCheck: number = 7) {
+  public async getAppointmentsByPeriod(daysToCheck: number = 1) {
     const allSchedules = await this.getSchedules();
     const today = this.getStartOfDay();
     const availableTimes = [];
@@ -36,7 +35,8 @@ export class ScheduleService {
     for (let dayOffset = 0; dayOffset <= daysToCheck; dayOffset++) {
       const currentDayStart = this.getCurrentDayStart(today, dayOffset);
       const daySchedules = this.getDaySchedules(allSchedules, currentDayStart);
-      const { dayWorkingHoursStart, dayWorkingHoursEnd, lunchStart, lunchEnd } = this.buildWorkingHours(currentDayStart);
+      const { dayWorkingHoursStart, dayWorkingHoursEnd, lunchStart, lunchEnd } =
+        this.buildWorkingHours(currentDayStart);
       const availableDayTimes = this.getAvailableTimes(
         this.sortSchedules(daySchedules),
         currentDayStart,
@@ -69,9 +69,9 @@ export class ScheduleService {
       .filter(
         ({ start, end }) =>
           start.toISOString().slice(0, 10) ===
-          currentDayStart.toISOString().slice(0, 10) ||
+            currentDayStart.toISOString().slice(0, 10) ||
           end.toISOString().slice(0, 10) ===
-          currentDayStart.toISOString().slice(0, 10),
+            currentDayStart.toISOString().slice(0, 10),
       );
   }
 
@@ -138,7 +138,7 @@ export class ScheduleService {
         end: lunchStart.toISOString(),
       });
 
-      // Adiciona o intervalo depois do almoço, se necessário
+      // Add the interval after ou before oh lunch, if there necessity
       if (lunchEnd < start) {
         availableTimes.push({
           day: currentDayStart.toISOString().slice(0, 10),
@@ -170,7 +170,7 @@ export class ScheduleService {
     // If there is no more availability after the last interval, do nothing.
     if (lastEndTime >= dayWorkingHoursEnd) return;
 
-    // If the last interval ends before lunch time.
+    // If the last interval ends before lunchtime.
     if (lastEndTime < lunchStart) {
       availableTimes.push({
         day: currentDayStart.toISOString().slice(0, 10),
@@ -185,7 +185,7 @@ export class ScheduleService {
       return;
     }
 
-    // If the last interval ends after lunch time.
+    // If the last interval ends after lunchtime.
     if (lastEndTime >= lunchEnd) {
       availableTimes.push({
         day: currentDayStart.toISOString().slice(0, 10),
@@ -196,12 +196,11 @@ export class ScheduleService {
   }
 
   private buildWorkingHours(currentDayStart: Date): {
-    dayWorkingHoursStart: Date,
-    dayWorkingHoursEnd: Date,
-    lunchStart: Date,
-    lunchEnd: Date
+    dayWorkingHoursStart: Date;
+    dayWorkingHoursEnd: Date;
+    lunchStart: Date;
+    lunchEnd: Date;
   } {
-
     currentDayStart.setUTCHours(WorkShift.OPENING);
     const dayWorkingHoursStart = new Date(currentDayStart);
 
