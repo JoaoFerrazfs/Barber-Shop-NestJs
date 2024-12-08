@@ -7,7 +7,7 @@ import {
 import { UserCreateDto } from '../dto/user.create.dto';
 import { UsersService } from '../services/users.service';
 import { QueryFailedError } from 'typeorm';
-import { User } from '../user.entity';
+import { encryptData } from '../../utils/encryption/util.encryption';
 
 @Controller('api/users')
 export class UserController {
@@ -18,9 +18,9 @@ export class UserController {
     @Body() userCreate: UserCreateDto,
   ): Promise<Record<string, Record<string, string>>> {
     try {
+      userCreate.password = await encryptData(userCreate.password);
       const { name, email, phone, type } =
         await this.userService.create(userCreate);
-
       return { data: { name, email, phone, type } };
     } catch (error) {
       if (

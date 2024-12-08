@@ -29,10 +29,7 @@ export class UsersService {
     return await this.userRepository.save(user);
   }
 
-  public async getUserByCredentials(
-    email: string,
-    password: string,
-  ): Promise<User> {
-    return await this.userRepository.findOne({ where: { email, password } });
+  public async getUserByCredentials(email: string): Promise<User> {
+    return await this.userRepository.findOne({ where: { email } });
   }
 }
