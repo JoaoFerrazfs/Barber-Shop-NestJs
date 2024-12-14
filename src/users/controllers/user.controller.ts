@@ -8,18 +8,19 @@ import { UserCreateDto } from '../dto/user.create.dto';
 import { UsersService } from '../services/users.service';
 import { QueryFailedError } from 'typeorm';
 import { encryptData } from '../../utils/encryption/util.encryption';
+import { ApiCreateUserDocs } from '../oas/user.schemas';
 
 @Controller('api/users')
 export class UserController {
   constructor(private readonly userService: UsersService) {}
 
+  @ApiCreateUserDocs()
   @Post('create')
   public async create(
     @Body() userCreate: UserCreateDto,
   ): Promise<Record<string, Record<string, string>>> {
     try {
-      console.log('asasasass')
-;      userCreate.password = await encryptData(userCreate.password);
+      userCreate.password = await encryptData(userCreate.password);
       const { name, email, phone, type } =
         await this.userService.create(userCreate);
       return { data: { name, email, phone, type } };

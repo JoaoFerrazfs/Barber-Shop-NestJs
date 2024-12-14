@@ -1,4 +1,4 @@
-import { applyDecorators, UseInterceptors } from '@nestjs/common';
+import { applyDecorators } from '@nestjs/common';
 import { MultipleModules, SingleModule } from './content.schemas';
 import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 
