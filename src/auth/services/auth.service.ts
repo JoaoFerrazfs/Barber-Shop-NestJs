@@ -15,7 +15,6 @@ export class AuthService {
     password: string,
   ): Promise<Record<string, Record<string, string>>> {
     const user = await this.usersService.getUserByCredentials(email);
-
     if (!user) throw new NotFoundException();
 
     if (!(await compareData(password, user?.password)))
