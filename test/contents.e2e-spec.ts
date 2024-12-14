@@ -40,8 +40,7 @@ describe('Contents (e2e)', () => {
       .send(payload);
 
     // Assertions
-    response.expect(201);
-    response.expect({
+    await response.expect(201).expect({
       data: {
         title: 'Primeiro slide',
         imageUrl:
@@ -56,8 +55,7 @@ describe('Contents (e2e)', () => {
     const response = request(app.getHttpServer()).get('/api/contents/modules');
 
     // Assertions
-    response.expect(200);
-    response.expect({
+    response.expect(200).expect({
       data: [
         {
           id: 1,
@@ -74,7 +72,7 @@ describe('Contents (e2e)', () => {
     const response = request(app.getHttpServer()).get('/api/contents/module/1');
 
     // Expectations
-    response.expect(200).expect({
+    await response.expect(200).expect({
       data: {
         id: 1,
         title: 'Primeiro slide',
@@ -98,7 +96,7 @@ describe('Contents (e2e)', () => {
       .send(payload);
 
     // Assertions
-    response.expect(200).expect({
+    await response.expect(200).expect({
       id: 1,
       title: 'Segundo slide',
       imageUrl:
@@ -113,6 +111,6 @@ describe('Contents (e2e)', () => {
     );
 
     // Assertions
-    response.expect(204).expect('');
+    await response.expect(204).expect('');
   });
 });

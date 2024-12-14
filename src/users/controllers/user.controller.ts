@@ -18,7 +18,8 @@ export class UserController {
     @Body() userCreate: UserCreateDto,
   ): Promise<Record<string, Record<string, string>>> {
     try {
-      userCreate.password = await encryptData(userCreate.password);
+      console.log('asasasass')
+;      userCreate.password = await encryptData(userCreate.password);
       const { name, email, phone, type } =
         await this.userService.create(userCreate);
       return { data: { name, email, phone, type } };
