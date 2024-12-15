@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { ContentsController } from './contents.controller';
 import { ContentsServiceMock } from '../../../test/mocks/Contents/contents.service.mock';
-import { ContentCreateDTO } from '../dto/content.create.dto';
+import { ContentCreateDto } from '../dto/contentCreate.dto';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { CacheModule } from '@nestjs/cache-manager';
 
@@ -36,7 +36,7 @@ describe('ContentsController', () => {
 
   it('Should return create contents', async () => {
     // Set
-    const data: ContentCreateDTO = {
+    const data: ContentCreateDto = {
       title: 'title',
       imageUrl: 'https://image.com',
     };
@@ -84,7 +84,7 @@ describe('ContentsController', () => {
 
   it('Should update a content', async () => {
     // Set
-    const data: ContentCreateDTO = {
+    const data: ContentCreateDto = {
       title: 'title',
       imageUrl: 'https://image.com',
     };
@@ -98,7 +98,7 @@ describe('ContentsController', () => {
 
   it('Should not update a not found content', async () => {
     // Set
-    const data: ContentCreateDTO = {
+    const data: ContentCreateDto = {
       title: 'title',
       imageUrl: 'https://image.com',
     };
@@ -115,7 +115,7 @@ describe('ContentsController', () => {
 
   it('Should return a generic error', async () => {
     // Set
-    const data: ContentCreateDTO = {
+    const data: ContentCreateDto = {
       title: 'title',
       imageUrl: 'https://image.com',
     };

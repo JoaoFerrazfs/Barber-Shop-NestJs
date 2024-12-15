@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { AvailabilityServiceMock } from '../../../test/mocks/Schedule/availability.service.mock';
 import { ScheduleServiceMock } from '../../../test/mocks/Schedule/schedule.service.mock';
-import { CreateSchedule } from '../dto/schedule.dto';
+import { CreateScheduleDto } from '../dto/schedule.dto';
 import { SpendTimeService } from '../enums/spendTimeService.enum';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { ScheduleController } from './schedule.controller';
@@ -28,7 +28,7 @@ describe('ScheduleController', () => {
 
   it('Should schedule a service', async () => {
     // Set
-    const data: CreateSchedule = {
+    const data: CreateScheduleDto = {
       type: SpendTimeService.SIMPLE_SERVICE,
       startTime: '2024-11-21T15:33:00.000Z',
       endTime: '2024-11-21T16:03:00.000Z',
@@ -44,7 +44,7 @@ describe('ScheduleController', () => {
 
   it('Should not schedule a service in weekends', async () => {
     // Set
-    const data: CreateSchedule = {
+    const data: CreateScheduleDto = {
       type: SpendTimeService.SIMPLE_SERVICE,
       startTime: '2024-11-21T15:33:00.000Z',
       endTime: '2024-11-21T16:03:00.000Z',
@@ -67,7 +67,7 @@ describe('ScheduleController', () => {
 
   it('Should not schedule a service out of avaiable work shift', async () => {
     // Set
-    const data: CreateSchedule = {
+    const data: CreateScheduleDto = {
       type: SpendTimeService.SIMPLE_SERVICE,
       startTime: '2024-11-21T15:33:00.000Z',
       endTime: '2024-11-21T16:03:00.000Z',
@@ -90,7 +90,7 @@ describe('ScheduleController', () => {
 
   it('Should not schedule a service with not slots able', async () => {
     // Set
-    const data: CreateSchedule = {
+    const data: CreateScheduleDto = {
       type: SpendTimeService.SIMPLE_SERVICE,
       startTime: '2024-11-21T15:33:00.000Z',
       endTime: '2024-11-21T16:03:00.000Z',

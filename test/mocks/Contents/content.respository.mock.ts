@@ -1,5 +1,5 @@
 import { Contents } from '../../../src/contents/contents.entity';
-import { ContentCreateDTO } from '../../../src/contents/dto/content.create.dto';
+import { ContentCreateDto } from '../../../src/contents/dto/contentCreate.dto';
 
 export const constent: Contents = {
   id: 1,
@@ -7,7 +7,7 @@ export const constent: Contents = {
   title: 'First Title',
 };
 
-export const contentCreateDTO: ContentCreateDTO = {
+export const contentCreateDTO: ContentCreateDto = {
   imageUrl: constent.title,
   title: constent.title,
 };

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Contents } from '../contents.entity';
 import { Repository } from 'typeorm';
-import { ContentCreateDTO } from '../dto/content.create.dto';
+import { ContentCreateDto } from '../dto/contentCreate.dto';
 
 @Injectable()
 export class ContentsService {
@@ -19,13 +19,13 @@ export class ContentsService {
     return await this.contentsRepository.findOneBy({ id });
   }
 
-  async store({ imageUrl, title }: ContentCreateDTO) {
+  async store({ imageUrl, title }: ContentCreateDto) {
     const content = this.contentsRepository.create({ imageUrl, title });
 
     return await this.contentsRepository.save(content);
   }
 
-  async update(id: number, data: ContentCreateDTO): Promise<boolean> {
+  async update(id: number, data: ContentCreateDto): Promise<boolean> {
     return Boolean((await this.contentsRepository.update(id, data)).affected);
   }
 

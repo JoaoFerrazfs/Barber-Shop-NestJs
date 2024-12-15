@@ -5,7 +5,7 @@ import { CustomIntervalValidator } from '../decorators/validators/schedule-inter
 import { getMessage } from '../../utils/validators/message.validator';
 import { ValidTimeInterval } from '../../utils/validators/hour.validation';
 
-export class CreateSchedule {
+export class CreateScheduleDto {
   @Validate(ValidTimeInterval)
   @IsISO8601()
   @IsNotEmpty()

@@ -1,4 +1,4 @@
-import { CreateSchedule } from '../../../src/schedule/dto/schedule.dto';
+import { CreateScheduleDto } from '../../../src/schedule/dto/schedule.dto';
 import { SpendTimeService } from '../../../src/schedule/enums/spendTimeService.enum';
 import { Schedule } from '../../../src/schedule/schedule.entity';
 
@@ -29,7 +29,7 @@ export const schedule3: Schedule = {
   updatedAt: new Date('2024-11-23 17:59:24.641452'),
 };
 
-export const scheduleDto: CreateSchedule = {
+export const scheduleDto: CreateScheduleDto = {
   startTime: '2024-11-21T15:33:00.000Z',
   endTime: '2024-11-21T16:03:00.000Z',
   type: SpendTimeService.SIMPLE_SERVICE,

@@ -12,7 +12,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ContentsService } from '../services/contents.service';
-import { ContentCreateDTO } from '../dto/content.create.dto';
+import { ContentCreateDto } from '../dto/contentCreate.dto';
 import { ApiResponse } from '@nestjs/swagger';
 import {
   GetModules,
@@ -39,7 +39,7 @@ export class ContentsController {
   @UseInterceptors(CacheInterceptor)
   @ApiResponse(CreateModule)
   @Post('module')
-  async module(@Body() data: ContentCreateDTO): Promise<{ data: Contents }> {
+  async module(@Body() data: ContentCreateDto): Promise<{ data: Contents }> {
     return { data: await this.contentsService.store(data) };
   }
 
@@ -63,7 +63,7 @@ export class ContentsController {
 
   @ApiUpdateSwagguer()
   @Patch('module/:id')
-  async update(@Param('id') id: number, @Body() data: ContentCreateDTO) {
+  async update(@Param('id') id: number, @Body() data: ContentCreateDto) {
     if (!(await this.contentsService.getModuleById(id)))
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
 

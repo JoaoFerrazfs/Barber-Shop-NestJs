@@ -4,7 +4,7 @@ import {
   Post,
   UnprocessableEntityException,
 } from '@nestjs/common';
-import { UserCreateDto } from '../dto/user.create.dto';
+import { UserCreateDto } from '../dto/userCreate.dto';
 import { UsersService } from '../services/users.service';
 import { QueryFailedError } from 'typeorm';
 import { encryptData } from '../../utils/encryption/util.encryption';

@@ -6,7 +6,7 @@ import {
   HttpStatus,
   Post,
 } from '@nestjs/common';
-import { CreateSchedule } from '../dto/schedule.dto';
+import { CreateScheduleDto } from '../dto/schedule.dto';
 import { ScheduleService } from '../services/schedule.service';
 import { AvailabilityService } from '../services/availability.service';
 
@@ -22,7 +22,7 @@ export class ScheduleController {
   }
 
   @Post('create')
-  public async schedule(@Body() data: CreateSchedule) {
+  public async schedule(@Body() data: CreateScheduleDto) {
     if (
       !this.availabilityService.isAvailableForWork(data.startTime, data.endTime)
     ) {

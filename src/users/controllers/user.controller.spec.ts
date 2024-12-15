@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserController } from './user.controller';
 import { UserServiceMock } from '../../../test/mocks/User/user.service.mock';
-import { UserCreateDto } from '../dto/user.create.dto';
+import { UserCreateDto } from '../dto/userCreate.dto';
 import { QueryFailedError } from 'typeorm';
 import {
   HttpException,

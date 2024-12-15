@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Schedule } from '../schedule.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateSchedule } from '../dto/schedule.dto';
+import { CreateScheduleDto } from '../dto/schedule.dto';
 import { WorkShift } from '../enums/workshift.enum';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class ScheduleService {
     return await this.scheduleRepository.find();
   }
 
-  public async createSchedule(data: CreateSchedule) {
+  public async createSchedule(data: CreateScheduleDto) {
     const transformedData = {
       type: String(data.type),
     };
