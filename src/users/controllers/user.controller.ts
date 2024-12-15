@@ -8,7 +8,7 @@ import { UserCreateDto } from '../dto/userCreate.dto';
 import { UsersService } from '../services/users.service';
 import { QueryFailedError } from 'typeorm';
 import { encryptData } from '../../utils/encryption/util.encryption';
-import { ApiCreateUserDocs } from '../oas/user.schemas';
+import { ApiCreateUserDocs } from '../oas/user.oas';
 
 @Controller('api/users')
 export class UserController {

@@ -9,6 +9,11 @@ import {
 import { CreateScheduleDto } from '../dto/schedule.dto';
 import { ScheduleService } from '../services/schedule.service';
 import { AvailabilityService } from '../services/availability.service';
+import {
+  ApiCreateScheduleDoc,
+  ApiGetAvailableSchedulesDoc,
+  ApiGetSchedulesDoc,
+} from '../oas/schedule.oas';
 
 @Controller('api/schedule')
 export class ScheduleController {
@@ -16,11 +21,13 @@ export class ScheduleController {
     private readonly scheduleService: ScheduleService,
     private readonly availabilityService: AvailabilityService,
   ) {}
+  @ApiGetSchedulesDoc()
   @Get()
   public async schedules() {
     return { data: await this.scheduleService.getSchedules() };
   }
 
+  @ApiCreateScheduleDoc()
   @Post('create')
   public async schedule(@Body() data: CreateScheduleDto) {
     if (
@@ -47,7 +54,7 @@ export class ScheduleController {
     ) {
       throw new HttpException(
         'Horario não disponivel',
-        HttpStatus.SERVICE_UNAVAILABLE,
+        HttpStatus.UNPROCESSABLE_ENTITY,
       );
     }
 
@@ -56,6 +63,7 @@ export class ScheduleController {
     return { data: result };
   }
 
+  @ApiGetAvailableSchedulesDoc()
   @Get('available')
   public async available() {
     return { data: await this.scheduleService.getAppointmentsByPeriod() };

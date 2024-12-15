@@ -19,7 +19,7 @@ export class ContentsService {
     return await this.contentsRepository.findOneBy({ id });
   }
 
-  async store({ imageUrl, title }: ContentCreateDto) {
+  async store({ imageUrl, title }: ContentCreateDto): Promise<Contents> {
     const content = this.contentsRepository.create({ imageUrl, title });
 
     return await this.contentsRepository.save(content);

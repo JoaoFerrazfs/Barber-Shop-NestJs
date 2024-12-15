@@ -8,10 +8,9 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   const config = new DocumentBuilder()
-    .setTitle('Contents')
-    .setDescription('The contents API description')
+    .setTitle('Barber Shop Nest')
+    .setDescription('The Barber shop APIs')
     .setVersion('1.0')
-    .addTag('Contents')
     .addServer('http://localhost:3000/')
     .build();
 
@@ -21,4 +20,5 @@ async function bootstrap() {
 
   await app.listen(process.env.PORT ?? 3000);
 }
+
 bootstrap();

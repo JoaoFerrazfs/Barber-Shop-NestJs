@@ -1,12 +1,14 @@
 import { applyDecorators } from '@nestjs/common';
 import {
   ApiBody,
+  ApiOperation,
   ApiResponse,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
 
 export function AuthLoginDocs() {
   return applyDecorators(
+    ApiOperation({ summary: 'Process user login' }),
     ApiBody({ schema: AuthLogin }),
     ApiResponse({ schema: AuthLoginResponse }),
     ApiUnprocessableEntityResponse(),

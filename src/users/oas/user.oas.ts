@@ -1,6 +1,7 @@
 import { applyDecorators } from '@nestjs/common';
 import {
   ApiBody,
+  ApiOperation,
   ApiResponse,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
@@ -8,6 +9,7 @@ import {
 export function ApiCreateUserDocs() {
   return applyDecorators(
     ApiBody({ schema: CreateUser }),
+    ApiOperation({ summary: 'Create a new a user' }),
     ApiResponse({ schema: CreateUserResponse }),
     ApiUnprocessableEntityResponse(),
   );
