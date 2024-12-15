@@ -16,7 +16,11 @@ async function bootstrap() {
 
   const documentFactory = () => SwaggerModule.createDocument(app, config);
 
-  SwaggerModule.setup('OAS', app, documentFactory);
+  SwaggerModule.setup('OAS', app, documentFactory, {
+    jsonDocumentUrl: 'OAS/json',
+    customSiteTitle: 'Barber Shop Nest',
+    yamlDocumentUrl: 'OAS/yaml',
+  });
 
   await app.listen(process.env.PORT ?? 3000);
 }
