@@ -1,8 +1,9 @@
 name: CI Workflow
 
+
 on:
   push:
-    branches: [main]
+    branches: [ main ]
     paths:
       - '**/*'
 
@@ -35,49 +36,55 @@ jobs:
           --health-timeout=5s
           --health-retries=3
 
+    permissions: write-all
     steps:
-      - name: Wait for MySQL to be ready
-        run: |
-          until mysql -h 127.0.0.1 -u root -p12345678 -e "SHOW DATABASES;"; do
-            echo "Waiting for MySQL..."
-            sleep 5
-          done
-
-      - name: Verify database
-        run: |
-          mysql -h 127.0.0.1 -u root -p12345678 -e "SHOW DATABASES;"
-
-
       - name: Setup Node.js environment
         uses: actions/setup-node@v4.1.0
         with:
           node-version: 20
 
+      - name: Cache Node.js modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Check out repository code
         uses: actions/checkout@v4
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Copy envs
         run: cp .env.ci .env
 
       - name: Start application
-        run: npm run start:dev &
-
-      - name: Wait for application to be ready
-        run: sleep 10 # Ajuste o tempo de espera conforme necessário
+        run: |
+          npm run start:dev &
+          while ! nc -z localhost 3000; do sleep 1; done
 
       - name: Download OpenAPI YAML
         run: curl -o openapi.yaml http://localhost:3000/OAS/yaml
 
-      - name: Verify downloaded file
-        run: cat openapi.yaml
-
       - name: Commit OpenAPI YAML
-        run: | 
-            git checkout fetch all
-            git checkout swagguer-docs
-            git pull
-            git commit -m "docs: update docs"
-            git push --force
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          
+          git config --global user.name 'JoaoFerrazfs'
+          git config --global user.email 'joaoferrazp@gmail.com'
+          
+          # Delete old branch
+          git push origin --delete swagguer-docs || true
+          git branch -D swagguer-docs || true
+          
+          # Create a new branch and send to remote repository
+          git checkout -b swagguer-docs
+          git push --set-upstream origin swagguer-docs --force
+          
+          # Add changes and update remote repository
+          git add .
+          git commit --amend --no-edit
+          git push --force
