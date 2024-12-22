@@ -7,6 +7,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
 
+  app.enableCors({ origin: ['https://joaoferrazfs.github.io'] });
+
   const config = new DocumentBuilder()
     .setTitle('Barber Shop Nest')
     .setDescription('The Barber shop APIs')
