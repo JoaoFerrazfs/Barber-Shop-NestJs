@@ -1,14 +1,19 @@
 import {
   Body,
   Controller,
+  Get,
   Post,
   UnprocessableEntityException,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
 import { UserCreateDto } from '../dto/userCreate.dto';
 import { UsersService } from '../services/users.service';
 import { QueryFailedError } from 'typeorm';
 import { encryptData } from '../../utils/encryption/util.encryption';
 import { ApiCreateUserDocs } from '../oas/user.oas';
+import { AuthGuard } from '../../auth/guards/auth.guard';
+import { Request as ExpressRequest } from 'express';
 
 @Controller('api/users')
 export class UserController {
@@ -36,5 +41,17 @@ export class UserController {
 
       throw new UnprocessableEntityException(error.message);
     }
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('profile')
+  public async getUserData(
+    @Request() req: ExpressRequest,
+  ): Promise<Record<string, string>> {
+    return {
+      name: req.user.username,
+      email: req.user.email,
+      type: req.user.type,
+    };
   }
 }

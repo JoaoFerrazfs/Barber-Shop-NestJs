@@ -5,6 +5,7 @@ import {
   HttpException,
   HttpStatus,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateScheduleDto } from '../dto/schedule.dto';
 import { ScheduleService } from '../services/schedule.service';
@@ -14,6 +15,7 @@ import {
   ApiGetAvailableSchedulesDoc,
   ApiGetSchedulesDoc,
 } from '../oas/schedule.oas';
+import { AuthGuard } from '../../auth/guards/auth.guard';
 
 @Controller('api/schedule')
 export class ScheduleController {
@@ -27,6 +29,7 @@ export class ScheduleController {
     return { data: await this.scheduleService.getSchedules() };
   }
 
+  @UseGuards(AuthGuard)
   @ApiCreateScheduleDoc()
   @Post('create')
   public async schedule(@Body() data: CreateScheduleDto) {

@@ -7,9 +7,12 @@ import * as request from 'supertest';
 import { Schedule } from '../src/schedule/schedule.entity';
 import { scheduleDto } from './mocks/Schedule/schedule.respository.mock';
 import MockDate from 'mockdate';
+import { JwtService } from '@nestjs/jwt';
+import { AUTH_CONFIG } from '../src/auth/configs/auth.config';
 
 describe('Schedule (e2e)', () => {
   let app: INestApplication;
+  let token: string;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -25,6 +28,19 @@ describe('Schedule (e2e)', () => {
 
     // Set Date
     MockDate.set('2024-11-21T10:30:00.000Z');
+
+    const payload = {
+      sub: '1',
+      username: 'joao',
+      email: 'joao@test.com',
+      type: 'customer',
+    };
+
+    token = await new JwtService({
+      global: true,
+      secret: AUTH_CONFIG.secret,
+      signOptions: { expiresIn: AUTH_CONFIG.expiresIn },
+    }).signAsync(payload);
   });
 
   afterAll(async () => {
@@ -35,6 +51,7 @@ describe('Schedule (e2e)', () => {
     // Actions
     const response = request(app.getHttpServer())
       .post('/api/schedule/create')
+      .set('Authorization', `Bearer ${token}`)
       .send(scheduleDto);
 
     // Assertions

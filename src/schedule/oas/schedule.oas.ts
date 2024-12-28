@@ -1,5 +1,6 @@
 import { applyDecorators } from '@nestjs/common';
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiOperation,
   ApiResponse,
@@ -22,6 +23,7 @@ export function ApiGetAvailableSchedulesDoc() {
 
 export function ApiCreateScheduleDoc() {
   return applyDecorators(
+    ApiBearerAuth(),
     ApiOperation({ summary: 'Create a schedule' }),
     ApiBody({ schema: GetCreateSchedule }),
     ApiResponse({ status: 201, schema: CreateSchedulesResponse }),

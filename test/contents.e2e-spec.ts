@@ -5,9 +5,12 @@ import { ContentsModule } from '../src/contents/contents.module';
 import * as request from 'supertest';
 import { Contents } from '../src/contents/contents.entity';
 import { DataSource } from 'typeorm';
+import { JwtService } from '@nestjs/jwt';
+import { AUTH_CONFIG } from '../src/auth/configs/auth.config';
 
 describe('Contents (e2e)', () => {
   let app: INestApplication;
+  let token: string;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -20,6 +23,19 @@ describe('Contents (e2e)', () => {
     const dataSource = app.get(DataSource);
     await dataSource.createQueryBuilder().delete().from(Contents).execute();
     await dataSource.query('ALTER TABLE contents AUTO_INCREMENT = 1');
+
+    const payload = {
+      sub: '1',
+      username: 'joao',
+      email: 'joao@test.com',
+      type: 'customer',
+    };
+
+    token = await new JwtService({
+      global: true,
+      secret: AUTH_CONFIG.secret,
+      signOptions: { expiresIn: AUTH_CONFIG.expiresIn },
+    }).signAsync(payload);
   });
 
   afterAll(async () => {
@@ -37,6 +53,7 @@ describe('Contents (e2e)', () => {
     //Actions
     const response = request(app.getHttpServer())
       .post('/api/contents/module')
+      .set('Authorization', `Bearer ${token}`)
       .send(payload);
 
     // Assertions
@@ -93,14 +110,17 @@ describe('Contents (e2e)', () => {
     // Actions
     const response = request(app.getHttpServer())
       .patch('/api/contents/module/1')
+      .set('Authorization', `Bearer ${token}`)
       .send(payload);
 
     // Assertions
     await response.expect(200).expect({
-      id: 1,
-      title: 'Segundo slide',
-      imageUrl:
-        'https://cdn.leroymerlin.com.br/uploads/img/banners/_7_home_tv_%7C_opecom_bricolagem_%7C_ordenada_25_10_a_17_11_27f8_1180x320.png?width=1200',
+      data: {
+        id: 1,
+        title: 'Segundo slide',
+        imageUrl:
+          'https://cdn.leroymerlin.com.br/uploads/img/banners/_7_home_tv_%7C_opecom_bricolagem_%7C_ordenada_25_10_a_17_11_27f8_1180x320.png?width=1200',
+      },
     });
   });
 
@@ -111,6 +131,9 @@ describe('Contents (e2e)', () => {
     );
 
     // Assertions
-    await response.expect(204).expect('');
+    await response
+      .expect(204)
+      .set('Authorization', `Bearer ${token}`)
+      .expect('');
   });
 });

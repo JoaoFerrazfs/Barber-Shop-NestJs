@@ -64,13 +64,10 @@ describe('Users (e2e)', () => {
       .send(payload);
 
     // Assertions
-    await response.expect(200).expect({
-      data: {
-        name: 'Joao',
-        email: 'joao@gmail124.com',
-        phone: '31971694273',
-        type: 'customer',
-      },
+    await response.expect(200).expect((res): void => {
+      expect(res.body).toHaveProperty('data');
+      expect(res.body.data).toHaveProperty('access_token');
+      expect(typeof res.body.data.access_token).toBe('string');
     });
   });
 });

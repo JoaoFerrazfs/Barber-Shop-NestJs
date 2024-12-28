@@ -1,5 +1,6 @@
 import { applyDecorators } from '@nestjs/common';
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiOperation,
   ApiParam,
@@ -24,6 +25,7 @@ export function ApiGetContentByIdDoc() {
 
 export function ApiCreateContentDoc() {
   return applyDecorators(
+    ApiBearerAuth(),
     ApiOperation({ summary: 'Create a content' }),
     ApiBody({ schema: CreateModule }),
     ApiResponse({ status: 201, schema: CreateModuleResponse }),
@@ -33,6 +35,7 @@ export function ApiCreateContentDoc() {
 
 export function ApiDeleteContentDoc() {
   return applyDecorators(
+    ApiBearerAuth(),
     ApiParam(idParam),
     ApiOperation({ summary: 'Delete a content' }),
     ApiResponse({ status: 204, description: 'Module deleted successfully' }),
@@ -43,6 +46,7 @@ export function ApiDeleteContentDoc() {
 
 export function ApiUpdateDoc() {
   return applyDecorators(
+    ApiBearerAuth(),
     ApiOperation({ summary: 'Update a content' }),
     ApiParam(idParam),
     ApiResponse({ status: 201, schema: CreateModuleResponse }),

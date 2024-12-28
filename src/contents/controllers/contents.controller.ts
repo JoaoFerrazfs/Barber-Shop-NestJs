@@ -9,6 +9,7 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { ContentsService } from '../services/contents.service';
@@ -23,6 +24,7 @@ import {
   ApiUpdateDoc,
   ApiDeleteContentDoc,
 } from '../oas/contents.oas';
+import { AuthGuard } from '../../auth/guards/auth.guard';
 
 @Controller('api/contents')
 export class ContentsController {
@@ -36,6 +38,7 @@ export class ContentsController {
     return { data: await this.contentsService.modules() };
   }
 
+  @UseGuards(AuthGuard)
   @UseInterceptors(CacheInterceptor)
   @ApiCreateContentDoc()
   @Post('module')
@@ -49,28 +52,33 @@ export class ContentsController {
     return { data: await this.contentsService.getModuleById(id) };
   }
 
+  @UseGuards(AuthGuard)
   @ApiDeleteContentDoc()
   @HttpCode(204)
   @Delete('module/:id')
-  async delete(@Param('id') id: number) {
+  async delete(@Param('id') id: number): Promise<object> {
     if (!(await this.contentsService.getModuleById(id)))
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
 
     if (await this.contentsService.delete(id)) return {};
 
-    throw new HttpException('Some error ocurred', HttpStatus.BAD_REQUEST);
+    throw new HttpException('Some error occurred', HttpStatus.BAD_REQUEST);
   }
 
+  @UseGuards(AuthGuard)
   @ApiUpdateDoc()
   @Patch('module/:id')
-  async update(@Param('id') id: number, @Body() data: ContentCreateDto) {
+  async update(
+    @Param('id') id: number,
+    @Body() data: ContentCreateDto,
+  ): Promise<{ data: Contents }> {
     if (!(await this.contentsService.getModuleById(id)))
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
 
     if (await this.contentsService.update(id, data)) {
-      return await this.contentsService.getModuleById(id);
+      return { data: await this.contentsService.getModuleById(id) };
     }
 
-    throw new HttpException('Some error ocurred', HttpStatus.BAD_REQUEST);
+    throw new HttpException('Some error occurred', HttpStatus.BAD_REQUEST);
   }
 }

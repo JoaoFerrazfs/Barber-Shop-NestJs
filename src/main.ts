@@ -14,6 +14,7 @@ async function bootstrap() {
     .setDescription('The Barber shop APIs')
     .setVersion('1.0')
     .addServer('http://localhost:3000/')
+    .addBearerAuth()
     .build();
 
   const documentFactory = () => SwaggerModule.createDocument(app, config);

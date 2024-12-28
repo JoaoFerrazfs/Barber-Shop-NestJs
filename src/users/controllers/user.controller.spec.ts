@@ -3,11 +3,10 @@ import { UserController } from './user.controller';
 import { UserServiceMock } from '../../../test/mocks/User/user.service.mock';
 import { UserCreateDto } from '../dto/userCreate.dto';
 import { QueryFailedError } from 'typeorm';
-import {
-  HttpException,
-  HttpStatus,
-  UnprocessableEntityException,
-} from '@nestjs/common';
+import { UnprocessableEntityException } from '@nestjs/common';
+import { Request as ExpressRequest } from 'express';
+import { JwtModule } from '@nestjs/jwt';
+import { AUTH_CONFIG } from '../../auth/configs/auth.config';
 
 describe('AuthController', () => {
   let controller: UserController;
@@ -16,6 +15,13 @@ describe('AuthController', () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UserController],
       providers: [UserServiceMock],
+      imports: [
+        JwtModule.register({
+          global: true,
+          secret: AUTH_CONFIG.secret,
+          signOptions: { expiresIn: AUTH_CONFIG.expiresIn },
+        }),
+      ],
     }).compile();
 
     controller = module.get<UserController>(UserController);
@@ -89,5 +95,33 @@ describe('AuthController', () => {
     await expect(actual).rejects.toThrow(
       new UnprocessableEntityException('Generic error'),
     );
+  });
+
+  it('should get user data', async () => {
+    // Set
+    const user = {
+      type: 'customer',
+      email: 'joao@test.com',
+      sub: '1',
+      id: '1',
+      username: 'joao',
+    };
+
+    const request = {
+      headers: {
+        authorization: 'Bearer mockToken',
+      },
+      user: user,
+    } as ExpressRequest;
+
+    // Actions
+    const actual = await controller.getUserData(request);
+
+    // Assertions
+    expect(actual).toEqual({
+      name: user.username,
+      email: user.email,
+      type: user.type,
+    });
   });
 });

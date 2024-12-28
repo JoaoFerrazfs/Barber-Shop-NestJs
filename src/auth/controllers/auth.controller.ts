@@ -10,12 +10,16 @@ export class AuthController {
   @AuthLoginDocs()
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  public async signIn(
-    @Body() authLoginDto: AuthLoginDto,
-  ): Promise<Record<string, Record<string, string>>> {
-    return await this.authService.signIn(
-      authLoginDto.email,
-      authLoginDto.password,
-    );
+  public async signIn(@Body() authLoginDto: AuthLoginDto): Promise<{
+    data: {
+      access_token: string;
+    };
+  }> {
+    return {
+      data: await this.authService.signIn(
+        authLoginDto.email,
+        authLoginDto.password,
+      ),
+    };
   }
 }
