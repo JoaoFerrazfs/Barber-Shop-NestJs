@@ -28,7 +28,7 @@ describe('Contents (e2e)', () => {
       sub: '1',
       username: 'joao',
       email: 'joao@test.com',
-      type: 'customer',
+      type: 'admin',
     };
 
     token = await new JwtService({

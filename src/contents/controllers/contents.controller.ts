@@ -25,6 +25,9 @@ import {
   ApiDeleteContentDoc,
 } from '../oas/contents.oas';
 import { AuthGuard } from '../../auth/guards/auth.guard';
+import { Roles } from '../../auth/enums/role.enum';
+import { Role } from '../../auth/decorators/roles.decorator';
+import { RolesGuard } from '../../auth/guards/roles.guard';
 
 @Controller('api/contents')
 export class ContentsController {
@@ -38,7 +41,8 @@ export class ContentsController {
     return { data: await this.contentsService.modules() };
   }
 
-  @UseGuards(AuthGuard)
+  @Role(Roles.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(CacheInterceptor)
   @ApiCreateContentDoc()
   @Post('module')
@@ -52,7 +56,8 @@ export class ContentsController {
     return { data: await this.contentsService.getModuleById(id) };
   }
 
-  @UseGuards(AuthGuard)
+  @Role(Roles.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @ApiDeleteContentDoc()
   @HttpCode(204)
   @Delete('module/:id')
@@ -65,7 +70,8 @@ export class ContentsController {
     throw new HttpException('Some error occurred', HttpStatus.BAD_REQUEST);
   }
 
-  @UseGuards(AuthGuard)
+  @Role(Roles.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @ApiUpdateDoc()
   @Patch('module/:id')
   async update(
