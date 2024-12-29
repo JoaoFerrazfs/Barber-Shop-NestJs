@@ -26,6 +26,6 @@ describe('AuthController', () => {
     const actual = await controller.signIn(authLoginDto);
 
     // Assertions
-    expect(actual).toEqual(['user-login-data']);
+    expect(actual).toEqual({ data: ['user-login-data'] });
   });
 });

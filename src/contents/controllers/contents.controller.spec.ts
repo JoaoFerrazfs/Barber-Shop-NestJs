@@ -4,6 +4,7 @@ import { ContentsServiceMock } from '../../../test/mocks/Contents/contents.servi
 import { ContentCreateDto } from '../dto/contentCreate.dto';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { CacheModule } from '@nestjs/cache-manager';
+import { JwtServiceMock } from '../../../test/mocks/Auth/jwt.service.mock';
 
 describe('ContentsController', () => {
   let contentsController: ContentsController;
@@ -12,7 +13,7 @@ describe('ContentsController', () => {
     const module = await Test.createTestingModule({
       controllers: [ContentsController],
       imports: [CacheModule.register()],
-      providers: [ContentsServiceMock],
+      providers: [ContentsServiceMock, JwtServiceMock],
     }).compile();
 
     contentsController = module.get<ContentsController>(ContentsController);
@@ -78,7 +79,7 @@ describe('ContentsController', () => {
 
     // Expectations
     await expect(actual).rejects.toThrow(
-      new HttpException('Some error ocurred', HttpStatus.BAD_REQUEST),
+      new HttpException('Some error occurred', HttpStatus.BAD_REQUEST),
     );
   });
 
@@ -93,7 +94,7 @@ describe('ContentsController', () => {
     const actual = await contentsController.update(1, data);
 
     // Expectations
-    expect(actual).toStrictEqual(['modules data']);
+    expect(actual).toStrictEqual({ data: ['modules data'] });
   });
 
   it('Should not update a not found content', async () => {
@@ -126,7 +127,7 @@ describe('ContentsController', () => {
 
     // Expectations
     await expect(actual).rejects.toThrow(
-      new HttpException('Some error ocurred', HttpStatus.BAD_REQUEST),
+      new HttpException('Some error occurred', HttpStatus.BAD_REQUEST),
     );
   });
 });

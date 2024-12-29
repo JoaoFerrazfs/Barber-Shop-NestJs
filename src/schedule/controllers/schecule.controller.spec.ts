@@ -5,6 +5,7 @@ import { CreateScheduleDto } from '../dto/schedule.dto';
 import { SpendTimeService } from '../enums/spendTimeService.enum';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { ScheduleController } from './schedule.controller';
+import { JwtServiceMock } from '../../../test/mocks/Auth/jwt.service.mock';
 
 describe('ScheduleController', () => {
   let scheduleController: ScheduleController;
@@ -12,7 +13,7 @@ describe('ScheduleController', () => {
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       controllers: [ScheduleController],
-      providers: [ScheduleServiceMock, AvailabilityServiceMock],
+      providers: [ScheduleServiceMock, AvailabilityServiceMock, JwtServiceMock],
     }).compile();
 
     scheduleController = module.get<ScheduleController>(ScheduleController);

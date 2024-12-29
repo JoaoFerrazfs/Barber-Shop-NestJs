@@ -2,13 +2,14 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
 import { UserServiceMock } from '../../../test/mocks/User/user.service.mock';
 import { NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { JwtServiceMock } from '../../../test/mocks/Auth/jwt.service.mock';
 
 describe('AuthService', () => {
   let service: AuthService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AuthService, UserServiceMock],
+      providers: [AuthService, UserServiceMock, JwtServiceMock],
     }).compile();
 
     service = module.get<AuthService>(AuthService);
@@ -23,14 +24,7 @@ describe('AuthService', () => {
     const actual = await service.signIn(email, password);
 
     // Assertions
-    expect(actual).toEqual({
-      data: {
-        email: 'test@test.com',
-        name: 'test',
-        phone: '99999999',
-        type: 'guest',
-      },
-    });
+    expect(actual).toEqual({ access_token: '12345678' });
   });
 
   it('should return unauthorized', async () => {
