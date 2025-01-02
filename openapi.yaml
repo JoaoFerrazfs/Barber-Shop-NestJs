@@ -1,0 +1,484 @@
+openapi: 3.0.0
+paths:
+  /api/contents/modules:
+    get:
+      operationId: ContentsController_modules
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                required:
+                  - data
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      required:
+                        - id
+                        - title
+                        - imageUrl
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        title:
+                          type: string
+                          example: Test Content
+                        imageUrl:
+                          type: string
+                          example: https://example.com/image.jpg
+      summary: Get all contents
+      tags:
+        - Contents
+  /api/contents/module:
+    post:
+      operationId: ContentsController_module
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - title
+                - imageUrl
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: Test Content
+                imageUrl:
+                  type: string
+                  example: https://example.com/image.jpg
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                required:
+                  - data
+                type: object
+                properties:
+                  data:
+                    type: object
+                    required:
+                      - id
+                      - title
+                      - imageUrl
+                    properties:
+                      id:
+                        type: string
+                        example: '123'
+                      title:
+                        type: string
+                        example: Test Content
+                      imageUrl:
+                        type: string
+                        example: https://example.com/image.jpg
+        '422':
+          description: ''
+      security:
+        - bearer: []
+      summary: Create a content
+      tags:
+        - Contents
+  /api/contents/module/{id}:
+    get:
+      operationId: ContentsController_getModule
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: ID of the module to delete
+          schema:
+            example: 1
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                required:
+                  - data
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      required:
+                        - id
+                        - title
+                        - imageUrl
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        title:
+                          type: string
+                          example: Test Content
+                        imageUrl:
+                          type: string
+                          example: https://example.com/image.jpg
+      summary: Get a unique content
+      tags:
+        - Contents
+    delete:
+      operationId: ContentsController_delete
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: ID of the module to delete
+          schema:
+            example: 1
+            type: number
+      responses:
+        '204':
+          description: Module deleted successfully
+        '400':
+          description: Some error occurred
+        '404':
+          description: Module not found
+      security:
+        - bearer: []
+      summary: Delete a content
+      tags:
+        - Contents
+    patch:
+      operationId: ContentsController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: ID of the module to delete
+          schema:
+            example: 1
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContentCreateDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                required:
+                  - data
+                type: object
+                properties:
+                  data:
+                    type: object
+                    required:
+                      - id
+                      - title
+                      - imageUrl
+                    properties:
+                      id:
+                        type: string
+                        example: '123'
+                      title:
+                        type: string
+                        example: Test Content
+                      imageUrl:
+                        type: string
+                        example: https://example.com/image.jpg
+        '400':
+          description: Some error occurred
+        '404':
+          description: Module not found
+      security:
+        - bearer: []
+      summary: Update a content
+      tags:
+        - Contents
+  /api/schedule:
+    get:
+      operationId: ScheduleController_schedules
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                required:
+                  - data
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      required:
+                        - id
+                        - type
+                        - startTime
+                        - endTime
+                        - createdAt
+                        - updatedAt
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        type:
+                          type: string
+                          example: SIMPLE_SERVICE
+                        startTime:
+                          type: string
+                          example: '2024-12-09T17:00:00.000Z'
+                        endTime:
+                          type: string
+                          example: '2024-12-09T17:30:00.000Z'
+                        createdAt:
+                          type: string
+                          example: '2024-12-15T14:53:35.451Z'
+                        updatedAt:
+                          type: string
+                          example: '2024-12-15T14:53:35.451Z'
+      summary: Get all schedules
+      tags:
+        - Schedule
+  /api/schedule/create:
+    post:
+      operationId: ScheduleController_schedule
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - type
+                - startTime
+                - endTime
+              properties:
+                type:
+                  type: string
+                  example: Test Content
+                startTime:
+                  type: string
+                  example: '2024-12-09T17:00:00.000Z'
+                endTime:
+                  type: string
+                  example: '2024-12-09T17:30:00.000Z'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                required:
+                  - data
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      type:
+                        type: string
+                        example: SIMPLE_SERVICE
+                      startTime:
+                        type: string
+                        example: '2024-12-09T17:00:00.000Z'
+                      endTime:
+                        type: string
+                        example: '2024-12-09T17:30:00.000Z'
+                      createdAt:
+                        type: string
+                        example: '2024-12-15T14:53:35.451Z'
+                      updatedAt:
+                        type: string
+                        example: '2024-12-15T14:53:35.451Z'
+        '422':
+          description: Validation errors for scheduling
+          content:
+            application/json:
+              examples:
+                outsideWorkHours:
+                  summary: Fora do horário de trabalho
+                  value:
+                    message: Fora do horário de trabalho
+                weekend:
+                  summary: Fim de semana
+                  value:
+                    message: Fim de semana tô de folga
+                unavailable:
+                  summary: Horário indisponível
+                  value:
+                    message: Horário não disponível
+      security:
+        - bearer: []
+      summary: Create a schedule
+      tags:
+        - Schedule
+  /api/schedule/available:
+    get:
+      operationId: ScheduleController_available
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    type: array
+                    items:
+                      required:
+                        - day
+                        - start
+                        - end
+                      properties:
+                        day:
+                          type: string
+                          example: '2024-12-15'
+                        start:
+                          type: string
+                          example: '2024-12-15T08:00:00.000Z'
+                        end:
+                          type: string
+                          example: '2024-12-15T12:00:00.000Z'
+      summary: Get all available schedules
+      tags:
+        - Schedule
+  /api/Auth/login:
+    post:
+      operationId: AuthController_signIn
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - email
+                - password
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: joao@gmail124.com
+                password:
+                  type: string
+                  example: '12345678'
+      responses:
+        '422':
+          description: ''
+        default:
+          description: ''
+          content:
+            application/json:
+              schema:
+                required:
+                  - email
+                  - pasword
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      access_token:
+                        type: string
+                        example: >-
+                          eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiSm9hbyIsImVtYWlsIjoiam9hb0BnbWFpbC5jb20iLCJ0eXBlIjoiY3VzdG9tZXIiLCJpYXQiOjE3MzU0MDY3NTQsImV4cCI6MTczNTQwNzI1NH0.7zxeq0PJ4RSLEf1mObepyYGx7fhKhXLf8oG4Daj1gvs
+      summary: Process user login
+      tags:
+        - Auth
+  /api/users/create:
+    post:
+      operationId: UserController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - email
+                - password
+                - name
+                - phone
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: joao@gmail124.com
+                password:
+                  type: string
+                  example: '12345678'
+                name:
+                  type: string
+                  example: Joao
+                phone:
+                  type: string
+                  example: '31971694273'
+      responses:
+        '422':
+          description: ''
+        default:
+          description: ''
+          content:
+            application/json:
+              schema:
+                required:
+                  - email
+                  - name
+                  - phone
+                type: object
+                properties:
+                  email:
+                    type: string
+                    example: joao@gmail124.com
+                  name:
+                    type: string
+                    example: Joao
+                  phone:
+                    type: string
+                    example: '31971694273'
+      summary: Create a new a user
+      tags:
+        - User
+  /api/users/profile:
+    get:
+      operationId: UserController_getUserData
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - User
+info:
+  title: Barber Shop Nest
+  description: The Barber shop APIs
+  version: '1.0'
+  contact: {}
+tags: []
+servers:
+  - url: http://localhost:3000/
+components:
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+  schemas:
+    ContentCreateDto:
+      type: object
+      properties: {}
