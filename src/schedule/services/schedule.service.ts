@@ -12,7 +12,7 @@ export class ScheduleService {
     private readonly scheduleRepository: Repository<Schedule>,
   ) {}
 
-  public async getSchedules() {
+  public async getSchedules(): Promise<Schedule[]> {
     return await this.scheduleRepository.find();
   }
 
@@ -58,7 +58,7 @@ export class ScheduleService {
   }
 
   private getDaySchedules(
-    allSchedules: any[],
+    allSchedules: Schedule[],
     currentDayStart: Date,
   ): { start: Date; end: Date }[] {
     return allSchedules

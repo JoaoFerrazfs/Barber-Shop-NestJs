@@ -16,6 +16,7 @@ import {
   ApiGetSchedulesDoc,
 } from '../oas/schedule.oas';
 import { AuthGuard } from '../../auth/guards/auth.guard';
+import { Schedule } from '../schedule.entity';
 
 @Controller('api/schedule')
 export class ScheduleController {
@@ -23,9 +24,10 @@ export class ScheduleController {
     private readonly scheduleService: ScheduleService,
     private readonly availabilityService: AvailabilityService,
   ) {}
+
   @ApiGetSchedulesDoc()
   @Get()
-  public async schedules() {
+  public async schedules(): Promise<{ data: Schedule[] }> {
     return { data: await this.scheduleService.getSchedules() };
   }
 

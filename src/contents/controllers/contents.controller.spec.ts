@@ -49,12 +49,12 @@ describe('ContentsController', () => {
     expect(actual).toStrictEqual({ data: ['modules data'] });
   });
 
-  it('Should return undefined for sucessfull deletion', async () => {
+  it('Should return undefined for successful deletion', async () => {
     // Actions
     const actual = await contentsController.delete(1);
 
     // Expectations
-    expect(actual).toBeUndefined;
+    expect(actual).toEqual({});
   });
 
   it('Should return not found for not valid user', async () => {

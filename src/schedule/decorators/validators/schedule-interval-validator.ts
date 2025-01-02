@@ -5,11 +5,20 @@ import {
 } from 'class-validator';
 
 import * as dayjs from 'dayjs';
+import { SpendTimeService } from '../../enums/spendTimeService.enum';
 
 @ValidatorConstraint({ name: 'CustomIntervalValidator', async: false })
 export class CustomIntervalValidator implements ValidatorConstraintInterface {
-  validate(_value: any, args: ValidationArguments): boolean {
-    const { startTime, endTime, type } = args.object as any;
+  validate(_value: string, args: ValidationArguments): boolean {
+    const {
+      startTime,
+      endTime,
+      type,
+    }: {
+      startTime: string;
+      endTime: string;
+      type: SpendTimeService;
+    } = args.object as never;
 
     if (!startTime || !endTime || !type) {
       return true;
@@ -24,15 +33,11 @@ export class CustomIntervalValidator implements ValidatorConstraintInterface {
 
     const differenceInMinutes = end.diff(start, 'minute');
 
-    if (differenceInMinutes !== type) {
-      return false;
-    }
-
-    return true;
+    return differenceInMinutes === type;
   }
 
   defaultMessage(args: ValidationArguments): string {
-    const { type } = args.object as any;
+    const { type }: { type: SpendTimeService } = args.object as never;
 
     if (type === 30) {
       return 'The time interval must be 30 minutes for SIMPLE_SERVICE.';
