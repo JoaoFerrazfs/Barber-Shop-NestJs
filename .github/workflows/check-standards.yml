@@ -3,7 +3,7 @@ name: Check Standards
 on: push
 
 jobs:
-  Run-Lint:
+  Run-Standars-Checking:
     runs-on: ubuntu-latest
     steps:
       - name: Setup Node.js environment
@@ -28,5 +28,8 @@ jobs:
       - name: Copy envs
         run: cp .env.ci .env
 
-      - name: Run E2E Tests
+      - name: Run Lint
         run: npm run lint
+
+      - name: Run Prettier
+        run: npm run format:check
